@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/aop
+          http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置Spring的IOC-->
+
+    <bean class="pers.sanmu.AOP.service.impl.AccountImpl" id="accountService"></bean>
+
+    <!--spring中基于XML的AOP配置步骤
+        1 把通知Bean也交给Spring管理
+        2 使用aop:config标签表面开始AOP配置
+        3 使用aop:aspect标签表面配置切面
+        4 在aop:aspect标签的内部使用对应标签来配置通知的类型
+            aop：before表示配置前置通知
+                metho属性：用于指定Logger类中哪个方法是前置通知
+        5 pointcut属性：用于指定切入点表达式，该表达式的含义指的是对业务层中哪些方法增强
+        -->
+
+    <bean id="logger" class="pers.sanmu.AOP.utils.Logger"></bean>
+
+    <!--配置AOP-->
+    <aop:config>
+        <!--配置切面-->
+        <aop:aspect id="logAdvice" ref="logger">
+            <!--配置通知类型，并且建立通知方法和切入点方法的关联-->
+            <aop:before method="printLog" pointcut="execution(public void pers.sanmu.AOP.service.impl.AccountImpl.saveAccount())"></aop:before>
+        </aop:aspect>
+    </aop:config>
+</beans>
